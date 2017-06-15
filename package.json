@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:4Catalyzer/react-native-actionsheet-picker.git"
+    "url": "https://github.com/suspectdoubloon/react-native-actionsheet-picker.git"
   },
   "keywords": [
     "react",
