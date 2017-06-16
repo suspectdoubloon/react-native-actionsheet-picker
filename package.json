@@ -2,11 +2,6 @@
   "name": "react-native-actionsheet-picker",
   "version": "2.0.1",
   "description": "A wrapper on top of ActionSheetPicker-3.0 for displaying string picker in an actionsheet",
-  "author": {
-    "name": "Chirag Jain",
-    "email": "jain_chirag04@yahoo.com",
-    "url": "http://chiragjain.tumblr.com"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/suspectdoubloon/react-native-actionsheet-picker.git"
