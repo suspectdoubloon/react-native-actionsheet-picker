@@ -69,6 +69,49 @@ RCT_EXPORT_METHOD(showStringPicker:(NSDictionary *)options
     [picker showActionSheetPicker];
 }
 
+RCT_EXPORT_METHOD(showDatePicker:(NSDictionary *)(NSDictionary *)options
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(__unused RCTPromiseRejectBlock)reject)
+{
+    UIViewController *controller = RCTPresentedViewController();
+    if (controller == nil) {
+        RCTLogError(@"Tried to display action sheet but there is no application window. options: %@", options);
+        return;
+    }
+    
+    UIView *sourceView = controller.view;
+    
+    NSString *title = @"";
+    if (options[@"title"]) {
+        title = [RCTConvert NSString:options[@"title"]];
+    }
+    
+    void(^doneBlock)(ActionSheetDatePicker *, id, id) = ^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
+        resolve(@{ @"cancelled": @NO, @"date": selectedDate });
+    };
+    
+    void(^cancelBlock)(ActionSheetDatePicker *) = ^(ActionSheetDatePicker *picker) {
+        resolve(@{ @"cancelled": @YES });
+    };
+    
+    ActionSheetDatePicker *datePicker = [[ActionSheetDatePicker alloc] initWithTitle:title
+                                                                      datePickerMode:UIDatePickerModeDate
+                                                                        selectedDate:nil
+                                                                           doneBlock:doneBlock
+                                                                         cancelBlock:cancelBlock
+                                                                              origin:sourceView];
+    
+    if (options[@"date"]) {
+        datePicker.date = [RCTConvert double:options[@"date"]];
+    }
+    
+    // disable popover for now to support ipad.
+    datePicker.popoverDisabled = true;
+    
+    [datePicker showActionSheetPicker];
+    
+}
+
 RCT_EXPORT_METHOD(showCountDownPicker:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(__unused RCTPromiseRejectBlock)reject)

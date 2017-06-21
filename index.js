@@ -9,6 +9,7 @@ const {
 const {
   showCountDownPicker,
   showStringPicker,
+  showDatePicker
 } = CJActionSheetPicker;
 
-export { showCountDownPicker, showStringPicker };
+export { showCountDownPicker, showStringPicker, showDatePicker };
