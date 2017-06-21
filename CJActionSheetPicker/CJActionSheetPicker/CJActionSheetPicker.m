@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(showStringPicker:(NSDictionary *)options
     [picker showActionSheetPicker];
 }
 
-RCT_EXPORT_METHOD(showDatePicker:(NSDictionary *)(NSDictionary *)options
+RCT_EXPORT_METHOD(showDateDownPicker:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(__unused RCTPromiseRejectBlock)reject)
 {
@@ -102,7 +102,7 @@ RCT_EXPORT_METHOD(showDatePicker:(NSDictionary *)(NSDictionary *)options
                                                                               origin:sourceView];
     
     if (options[@"date"]) {
-        datePicker.date = [RCTConvert double:options[@"date"]];
+        datePicker.countDownDuration = [RCTConvert double:options[@"date"]];
     }
     
     // disable popover for now to support ipad.
