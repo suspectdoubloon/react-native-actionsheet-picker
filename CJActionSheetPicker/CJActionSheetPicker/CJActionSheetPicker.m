@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(showStringPicker:(NSDictionary *)options
     [picker showActionSheetPicker];
 }
 
-RCT_EXPORT_METHOD(showDateDownPicker:(NSDictionary *)options
+RCT_EXPORT_METHOD(showDatePicker:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(__unused RCTPromiseRejectBlock)reject)
 {
@@ -101,9 +101,45 @@ RCT_EXPORT_METHOD(showDateDownPicker:(NSDictionary *)options
                                                                          cancelBlock:cancelBlock
                                                                               origin:sourceView];
     
-    if (options[@"date"]) {
-        datePicker.countDownDuration = [RCTConvert double:options[@"date"]];
+    // disable popover for now to support ipad.
+    datePicker.popoverDisabled = true;
+    
+    [datePicker showActionSheetPicker];
+    
+}
+
+
+RCT_EXPORT_METHOD(showTimePicker:(NSDictionary *)options
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(__unused RCTPromiseRejectBlock)reject)
+{
+    UIViewController *controller = RCTPresentedViewController();
+    if (controller == nil) {
+        RCTLogError(@"Tried to display action sheet but there is no application window. options: %@", options);
+        return;
     }
+    
+    UIView *sourceView = controller.view;
+    
+    NSString *title = @"";
+    if (options[@"title"]) {
+        title = [RCTConvert NSString:options[@"title"]];
+    }
+    
+    void(^doneBlock)(ActionSheetDatePicker *, id, id) = ^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
+        resolve(@{ @"cancelled": @NO, @"time": selectedDate });
+    };
+    
+    void(^cancelBlock)(ActionSheetDatePicker *) = ^(ActionSheetDatePicker *picker) {
+        resolve(@{ @"cancelled": @YES });
+    };
+    
+    ActionSheetDatePicker *datePicker = [[ActionSheetDatePicker alloc] initWithTitle:title
+                                                                      datePickerMode:UIDatePickerModeTime
+                                                                        selectedDate:nil
+                                                                           doneBlock:doneBlock
+                                                                         cancelBlock:cancelBlock
+                                                                              origin:sourceView];
     
     // disable popover for now to support ipad.
     datePicker.popoverDisabled = true;
